@@ -39,14 +39,15 @@ schema = graphene.Schema(query=Query, mutation=Mutations)
 
 result = schema.execute(
     '''
-    mutation createUser{
-        createUser(userName: "vikrantvkk") {
+    mutation createUser($userName: String){
+        createUser(userName: $userName) {
             user {
                 userName
             }
         }
     }
-    '''
+    ''',
+    variable_values={'userName': "Vikrantvish"}
 )
 
 items = dict(result.data.items())
