@@ -5,6 +5,9 @@ import requests
 from packages.src.main.constants import PUBLIC_KEY, BASE_URI, TARGET_ENV
 
 
+identify_query = """{"query":"\n  mutation IdentifyAccount($input: IdentifyAccountInput!) {\n    identifyAccount(input: $input) {\n        id\n    }\n  }\n","""
+
+
 def create_payload(*args, **kwargs):
     body = dict()
     query = kwargs.get("query")
@@ -15,6 +18,10 @@ def create_payload(*args, **kwargs):
         if params != "query":
             body["variables"]["input"][params] = kwargs[params]
     return body
+
+
+def create_query():
+    pass
 
 
 class Client:
@@ -53,10 +60,10 @@ class Client:
         header = self.get_header()
         return requests.post(url=self.base_uri + req_uri, headers=header, data=body)
 
-    # def identify(self, uuid):
-    #     identity_query = create_query()
-    #     body = create_payload(query=identity_query, anonymousAccountId=uuid)
-    #     return self.make_http_req(self.base_uri, json.dumps(body))
+    def identify(self, uuid):
+        identity_query = create_query()
+        body = create_payload(query=identity_query, anonymousAccountId=uuid)
+        return self.make_http_req(self.base_uri, json.dumps(body))
     #
     # def reset(self, uuid):
     #     identity_query = create_query()
