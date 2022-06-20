@@ -64,9 +64,9 @@ class Client:
     def identify(self, uuid):
         body = create_payload(query=create_query("identify"), anonymousAccountId=uuid)
         return self.make_http_req(self.base_uri, json.dumps(body))
-    #
-    # def reset(self, uuid):
-    #     identity_query = create_query()
-    #     body = create_payload(query=identity_query, anonymousAccountId=uuid)
-    #     return self.make_http_req(self.base_uri, json.dumps(body))
+
+    def reset(self, uuid):
+        identity_query = create_query()
+        body = create_payload(query=identity_query, anonymousAccountId=uuid)
+        return self.make_http_req(self.base_uri, json.dumps(body))
 
