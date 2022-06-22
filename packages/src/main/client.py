@@ -5,7 +5,7 @@ import requests
 from packages.src.main.constants import PUBLIC_KEY, BASE_URI, TARGET_ENV
 
 
-identify_query = """{"query":"\n  mutation IdentifyAccount($input: IdentifyAccountInput!) {\n    identifyAccount(
+identify_query = """ "\n  mutation IdentifyAccount($input: IdentifyAccountInput!) {\n    identifyAccount(
 input: $input) {\n        id\n    }\n  }\n", """
 
 reset_query = """ "\n  mutation TrackEvent($input: TrackEventInput!) {\n    trackEvent(input: $input) {\n        id\n   
