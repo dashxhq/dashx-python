@@ -7,3 +7,4 @@ q = "\n  mutation IdentifyAccount($input: IdentifyAccountInput!) {\n    identify
     "id\n    }\n  }\n"
 payload = create_payload(query=q, anonymousUid="", firstName="", lastName="")
 response = http_client.make_http_req("", json.dumps(payload))
+
