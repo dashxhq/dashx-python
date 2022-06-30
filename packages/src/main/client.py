@@ -5,12 +5,6 @@ import requests
 from packages.src.main.constants import PUBLIC_KEY, BASE_URI, TARGET_ENV
 from packages.src.main.utils import create_payload, create_query
 
-identify_query = """ "\n  mutation IdentifyAccount($input: IdentifyAccountInput!) {\n    identifyAccount(
-input: $input) {\n        id\n    }\n  }\n", """
-
-reset_query = """ "\n  mutation TrackEvent($input: TrackEventInput!) {\n    trackEvent(input: $input) {\n        id\n   
- }\n  }\n" """
-
 
 class Client:
     __shared_instance = "HTTP Client"

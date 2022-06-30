@@ -1,6 +1,3 @@
-from packages.src.main.client import identify_query, reset_query
-
-
 def create_payload(*args, **kwargs):
     body = dict()
     query = kwargs.get("query")
@@ -18,3 +15,9 @@ def create_query(query_type):
         return identify_query
     if query_type == "reset":
         return reset_query
+
+
+identify_query = """ "\n  mutation IdentifyAccount($input: IdentifyAccountInput!) {\n    identifyAccount(
+input: $input) {\n        id\n    }\n  }\n", """
+reset_query = """ "\n  mutation TrackEvent($input: TrackEventInput!) {\n    trackEvent(input: $input) {\n        id\n   
+ }\n  }\n" """
