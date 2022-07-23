@@ -1,11 +1,20 @@
+import hashlib
 import os
+import base64
+from Crypto.Cipher import AES
+from Crypto import Random
 
 import uuid as uuid
 from gql import Client, gql
 from gql.transport.aiohttp import AIOHTTPTransport
-from gql.transport.exceptions import TransportError
 
 from src.graphql import IDENTIFY_ACCOUNT_REQUEST
+
+VERSION = "v1"
+
+BLOCK_SIZE = 16
+pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * chr(BLOCK_SIZE - len(s) % BLOCK_SIZE)
+unpad = lambda s: s[:-ord(s[len(s) - 1:])]
 
 
 class Client:
@@ -26,6 +35,16 @@ class Client:
             q_params = params
 
         return self.make_request(q_params, IDENTIFY_ACCOUNT_REQUEST)
+
+    def generate_identity_token(self, uid, **options):
+        if self.privateKey is None:
+            raise Exception('Private key not set')
+        kind = options.get("kind", "regular")
+        private_key = hashlib.sha256(self.privateKey.encode("utf-8")).digest()
+        raw = pad("{};{};{}".format(VERSION, kind, uid))
+        nonce = Random.new().read(AES.block_size)
+        cipher = AES.new(private_key, AES.MODE_GCM, nonce)
+        return base64.b64encode(nonce + cipher.encrypt(raw) + cipher.get_auth_tag()).decode("utf-8")
 
     def make_request(self, q_params, query_name):
         query = gql(query_name)
