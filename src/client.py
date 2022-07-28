@@ -4,7 +4,7 @@ import uuid as uuid
 from gql import Client, gql
 from gql.transport.aiohttp import AIOHTTPTransport
 
-from src.graphql import IDENTIFY_ACCOUNT_REQUEST
+from src.graphql import IDENTIFY_ACCOUNT_REQUEST, TRACK_EVENT_REQUEST
 
 
 class GqlClient:
@@ -25,6 +25,12 @@ class GqlClient:
         q_params.update(params)
 
         return self.make_request(q_params, IDENTIFY_ACCOUNT_REQUEST)
+
+    def track(self, event, uid=None, data=None):
+        if uid is None:
+            return self.make_request({'event': event, 'accountAnonymousUid': str(uuid.uuid4()), 'data': data},
+                                     TRACK_EVENT_REQUEST)
+        return self.make_request({'event': event, 'accountUid': str(uid), 'data': data}, TRACK_EVENT_REQUEST)
 
     def make_request(self, q_params, query_name):
         query = gql(query_name)
