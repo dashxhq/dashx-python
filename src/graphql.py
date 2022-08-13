@@ -5,3 +5,11 @@ IDENTIFY_ACCOUNT_REQUEST = '''
     }
   }
 '''
+
+TRACK_EVENT_REQUEST = '''
+  mutation TrackEvent($input: TrackEventInput!) {
+    trackEvent(input: $input) {
+        success
+    }
+  }
+'''
