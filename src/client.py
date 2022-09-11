@@ -1,10 +1,18 @@
+import hashlib
 import os
+import base64
+from Crypto.Cipher import AES
+from Crypto import Random
 
 import uuid as uuid
+
+from Crypto.Util.Padding import pad
 from gql import Client, gql
 from gql.transport.aiohttp import AIOHTTPTransport
 
 from src.graphql import IDENTIFY_ACCOUNT_REQUEST, TRACK_EVENT_REQUEST
+
+VERSION = 'v1'
 
 
 class GqlClient:
@@ -19,9 +27,9 @@ class GqlClient:
     def identify(self, uid=None, **params):
         q_params = dict()
         if uid is None:
-            q_params["anonymousUid"] = str(uuid.uuid4())
+            q_params['anonymousUid'] = str(uuid.uuid4())
         else:
-            q_params["uid"] = str(uid)
+            q_params['uid'] = str(uid)
         q_params.update(params)
 
         return self.make_request(q_params, IDENTIFY_ACCOUNT_REQUEST)
@@ -31,6 +39,16 @@ class GqlClient:
             return self.make_request({'event': event, 'accountAnonymousUid': str(uuid.uuid4()), 'data': data},
                                      TRACK_EVENT_REQUEST)
         return self.make_request({'event': event, 'accountUid': str(uid), 'data': data}, TRACK_EVENT_REQUEST)
+
+    def generate_identity_token(self, uid, **options):
+        if self.privateKey is None:
+            raise Exception('Private key not set')
+        kind = options.get('kind', 'regular')
+        private_key = hashlib.sha256(self.privateKey.encode('utf-8')).digest()
+        raw = pad('{};{};{}'.format(VERSION, kind, uid))
+        nonce = Random.new().read(AES.block_size)
+        cipher = AES.new(private_key, AES.MODE_GCM, nonce)
+        return base64.b64encode(nonce + cipher.encrypt(raw) + cipher.get_auth_tag()).decode('utf-8')
 
     def make_request(self, q_params, query_name):
         query = gql(query_name)
