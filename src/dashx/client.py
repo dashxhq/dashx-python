@@ -4,12 +4,12 @@ import uuid as uuid
 from gql import Client, gql
 from gql.transport.aiohttp import AIOHTTPTransport
 
-from src.graphql import IDENTIFY_ACCOUNT_REQUEST, TRACK_EVENT_REQUEST
+from .graphql import IDENTIFY_ACCOUNT_REQUEST, TRACK_EVENT_REQUEST
 
 VERSION = 'v1'
 
 
-class GqlClient:
+class DashX:
     def __init__(self, base_uri=os.environ.get('DASHX_BASE_URI', 'https://api.dashx.com/graphql'),
                  public_key=os.environ.get('DASHX_PUBLIC_KEY'), private_key=os.environ.get('DASHX_PRIVATE_KEY'),
                  target_environment=os.environ.get('DASHX_TARGET_ENVIRONMENT')):
