@@ -23,6 +23,14 @@ CREATE_DELIVERY_REQUEST = '''
   }
 '''
 
+EXECUTE_FLOW_REQUEST = '''
+  mutation ExecuteFlow($input: ExecuteFlowInput!) {
+    executeFlow(input: $input) {
+      id
+    }
+  }
+'''
+
 SAVE_CONTACTS_REQUEST = '''
   mutation SaveContacts($input: SaveContactsInput!) {
     saveContacts(input: $input) {

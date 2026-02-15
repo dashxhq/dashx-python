@@ -29,6 +29,7 @@ These examples show how to use the DashX client for **identify** and **track**. 
    # With the package installed (pip install -e .)
    python -m examples.identify_example
    python -m examples.track_example
+   python -m examples.execute_flow_example
    ```
 
    Or without installing (examples add `src` to `sys.path`):
@@ -36,6 +37,7 @@ These examples show how to use the DashX client for **identify** and **track**. 
    ```bash
    PYTHONPATH=src python -m examples.identify_example
    PYTHONPATH=src python -m examples.track_example
+   PYTHONPATH=src python -m examples.execute_flow_example
    ```
 
 ## Using a `.env` file (optional)
@@ -69,3 +71,4 @@ To avoid exporting variables in the shell, you can use a `.env` file in the proj
 
 - **identify_example.py** – Identify a user by UID (and optional traits) or anonymously.
 - **track_example.py** – Track events with or without a user UID and optional event data.
+- **execute_flow_example.py** – Execute a flow; prompts for Flow ID, arguments (JSON), and optional scheduledAt.

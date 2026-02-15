@@ -10,6 +10,7 @@ from .graphql import (
     CAPTURE_PAYMENT_REQUEST,
     CHECKOUT_CART_REQUEST,
     CREATE_DELIVERY_REQUEST,
+    EXECUTE_FLOW_REQUEST,
     FETCH_CART_REQUEST,
     FETCH_CONTACTS_REQUEST,
     FETCH_ITEM_REQUEST,
@@ -91,6 +92,17 @@ class DashX:
                 params['content'][key] = val if isinstance(val, list) else [val]
         result = self._execute(CREATE_DELIVERY_REQUEST, {'input': params})
         return result.get('createDelivery') if result else None
+
+    def execute_flow(self, flow_id, arguments, scheduled_at=None):
+        """Execute a flow. Returns the execution id (or None)."""
+        params = {
+            'flowId': str(flow_id),
+            'arguments': arguments,
+        }
+        if scheduled_at is not None:
+            params['scheduledAt'] = scheduled_at
+        result = self._execute(EXECUTE_FLOW_REQUEST, {'input': params})
+        return result.get('executeFlow') if result else None
 
     def search_records(self, resource, options=None):
         """
