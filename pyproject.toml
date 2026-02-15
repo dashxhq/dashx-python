@@ -13,6 +13,7 @@ authors = [
     { name = "Pradeep Kumar", email = "pradeep@dashx.com" }
 ]
 keywords = ["dashx", "sdk"]
+urls = { Documentation = "https://docs.dashx.com", Homepage = "https://dashx.com", Repository = "https://github.com/dashxhq/dashx-python" }
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
